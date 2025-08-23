@@ -1,0 +1,103 @@
+
+Ranking de Países por Suma de Pecados:
+
+1. Alemania   - 7099 pecados
+2. Burundi   - 5585 pecados
+3. Azerbaiyan   - 5578 pecados
+4. Arabia Saudita   - 5452 pecados
+5. Libano   - 5346 pecados
+6. Irlanda   - 5270 pecados
+7. Dinamarca   - 5248 pecados
+8. Barein   - 5139 pecados
+9. Luxemburgo   - 5100 pecados
+10. Bulgaria   - 4956 pecados
+11. Islas Salomon   - 4931 pecados
+12. Maldivas   - 4925 pecados
+13. Albania   - 4830 pecados
+14. Colombia   - 4741 pecados
+15. Comoras   - 4652 pecados
+16. Bahamas   - 4593 pecados
+17. Ghana   - 4551 pecados
+18. Croacia   - 4492 pecados
+19. Camerun   - 4465 pecados
+20. Italia   - 4444 pecados
+21. Bosnia y Herzegovina   - 4410 pecados
+22. Malaui   - 4409 pecados
+23. Iraq   - 4385 pecados
+24. Finlandia   - 4360 pecados
+25. Egipto   - 4351 pecados
+26. Guinea   - 4331 pecados
+27. Argelia   - 4329 pecados
+28. Australia   - 4260 pecados
+29. Haiti   - 4260 pecados
+30. Cabo Verde   - 4252 pecados
+31. Grecia   - 4203 pecados
+32. Madagascar   - 4156 pecados
+33. Indonesia   - 4070 pecados
+34. Etiopia   - 4063 pecados
+35. Laos   - 4034 pecados
+36. Argentina   - 4016 pecados
+37. Letonia   - 3975 pecados
+38. Burkina Faso   - 3953 pecados
+39. Gabon   - 3943 pecados
+40. Guinea-Bisau   - 3893 pecados
+41. Guyana   - 3782 pecados
+42. Liberia   - 3778 pecados
+43. India   - 3748 pecados
+44. Islas Maldivas   - 3740 pecados
+45. Islandia   - 3732 pecados
+46. Malasia   - 3709 pecados
+47. Brasil   - 3703 pecados
+48. Canada   - 3636 pecados
+49. Eslovenia   - 3521 pecados
+50. Ecuador   - 3503 pecados
+51. Filipinas   - 3492 pecados
+52. Francia   - 3458 pecados
+53. Guatemala   - 3418 pecados
+54. Armenia   - 3248 pecados
+55. Botsuana   - 3241 pecados
+56. Iran   - 3237 pecados
+57. Belice   - 3155 pecados
+58. Libia   - 3149 pecados
+59. Banglades   - 3109 pecados
+60. Espana   - 3090 pecados
+61. Honduras   - 3046 pecados
+62. Kenia   - 3041 pecados
+63. Brunei   - 2947 pecados
+64. Bielorrusia   - 2895 pecados
+65. Gambia   - 2886 pecados
+66. Republica Democratica del Congo   - 2875 pecados
+67. Belgica   - 2853 pecados
+68. Austria   - 2833 pecados
+69. Japon   - 2833 pecados
+70. Angola   - 2822 pecados
+71. Islas Marshall   - 2821 pecados
+72. Andorra   - 2747 pecados
+73. Estados Unidos   - 2631 pecados
+74. Kiribati   - 2612 pecados
+75. Georgia   - 2611 pecados
+76. Dominica   - 2607 pecados
+77. Antigua y Barbuda   - 2595 pecados
+78. Kuwait   - 2586 pecados
+79. Emiratos Arabes Unidos   - 2575 pecados
+80. Afganistan   - 2568 pecados
+81. Lituania   - 2567 pecados
+82. Jordania   - 2503 pecados
+83. Bolivia   - 2495 pecados
+84. Barbados   - 2495 pecados
+85. Kazajistan   - 2431 pecados
+86. Estonia   - 2427 pecados
+87. Hungria   - 2380 pecados
+88. Kirguistan   - 2350 pecados
+89. Benin   - 2341 pecados
+90. China   - 2255 pecados
+91. Chile   - 2224 pecados
+92. Jamaica   - 2154 pecados
+93. El Salvador   - 1970 pecados
+94. Republica del Congo   - 1859 pecados
+95. Chad   - 1767 pecados
+96. Granada   - 1666 pecados
+97. Cuba   - 1550 pecados
+98. Costa Rica   - 1290 pecados
+99. Camboya   - 897 pecados
+

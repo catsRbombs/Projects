@@ -1,0 +1,7 @@
+graph G {
+  Mercado1;
+  Whirpool;
+  FuenteDeEnergia1;
+  Whirpool;
+  Mercado1 -- FuenteDeEnergia1;
+}

@@ -1,0 +1,22 @@
+Acciones de dios:
+- Spawnear recurso:
+	-fruta
+	-carne
+	-madera
+	-awa
+	-hojas (medicina
+- Spawnear tormenta
+- Spawnear animal
+- Mandar animal a atacar base
+- Pasar al siguiente día
+
+- Enfermar persona
+- Herir persona
+
+- También hacer un display de las coordenadas 
+  clickeadas en el mapa
+
+
+  NASHE
+
+

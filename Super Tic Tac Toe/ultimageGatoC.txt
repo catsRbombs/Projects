@@ -1,0 +1,588 @@
+     1	// SUPERGATO
+     2	// Proyecto #2
+     3	
+     4	// IC-3101 Arquitectura de Computadoras
+     5	
+     6	// Instituto Tecnológico de Costa Rica
+     7	// Campus Tecnológico Central Cartago
+     8	// Escuela de Ingeniería en Computación
+     9	// II Semestre 2024
+    10	// Prof. M.Sc. Esteban Arias Méndez
+    11	
+    12	// Efraim Cuevas Aguilar
+    13	// Carné: 2024109746
+    14	// Fabián Mata Salas
+    15	// Carné: 2024188730
+    16	
+    17	#include <gtk/gtk.h>
+    18	#include <string.h>
+    19	#include <stdlib.h>
+    20	#include <stdio.h>
+    21	// #include <gdk-pixbuf/gdk-pixbuf.h>
+    22	// #include <gdk-pixbuf/gdk-pixbuf-loader.h>
+    23	// #include <gdk-pixbuf/gdk-pixbuf-utils.h>
+    24	
+    25	#include "estructuras.h"
+    26	
+    27	#define O_BIG "resources/O_grande.png"
+    28	#define O_SMALL "resources/O_small.png"
+    29	#define X_BIG "resources/X_grande.png"
+    30	#define X_SMALL "resources/X_small.png"
+    31	
+    32	// Compilar con estos comandos
+    33	//  nasm -f elf -g -F dwarf ultimateGato.asm -o ultimateGato.o
+    34	// gcc ultimateGato.c ultimateGato.o -m32 -o ultimateGato $(pkg-config --cflags --libs gtk+-3.0) -rdynamic
+    35	//  ./ultimateGato
+    36	
+    37	// gcc ultimateGato.c -o ultimateGato $(pkg-config --cflags --libs gtk+-3.0) -rdynamic
+    38	
+    39	// gcc ultimateGato.c -o ultimateGato `pkg-config --cflags --libs gtk+-3.0`
+    40	// gcc -o ultimateGato ultimateGato.c `pkg-config --cflags --libs gtk+-3.0 gdk-pixbuf-2.0`
+    41	// gcc ultimateGato.c -o ultimateGato $(pkg-config --cflags --libs gtk+-3.0 gdk-pixbuf-2.0) -rdynamic
+    42	
+    43	// Variables globales para manejar la interfaz gráfica
+    44	GtkBuilder *builder;
+    45	GtkWidget *window;
+    46	GtkWidget *fixed;
+    47	
+    48	GtkWidget *reiniciarBtn;
+    49	GtkWidget *gamemodeSwitch;
+    50	GtkWidget *turnoDeLbl;
+    51	GtkWidget *turnoJugadorImg;
+    52	GtkWidget *cambiarTokenBtn;
+    53	
+    54	GtkWidget *grid[9][3][3];  // Grid de botones
+    55	GtkWidget *megaGrid[3][3]; // Grid de imageWidgets para colocar los elementos grandes
+    56	
+    57	// Variable del turno para saber cual label poner
+    58	//  O = 0            X = 1
+    59	// Siempre va a iniciar O
+    60	int turno = 0;
+    61	// Variable que verifica el modo de juego.
+    62	int botPlay = 0;
+    63	// Variables de puntaje
+    64	int pointP1 = 0;
+    65	int pointP2 = 0;
+    66	// FUNCIONES PARA LA INTERFAZ
+    67	void botClicked();
+    68	void init();
+    69	void createButtonGrid();
+    70	void createImageGrid();
+    71	void cellClicked(GtkWidget *, gpointer);
+    72	void changeCellIcon(GtkWidget *);
+    73	void highlightCell(struct Coordenada *);
+    74	void changeBigCellIcon(int);
+    75	void switchTurno();
+    76	void switchGamemode();
+    77	void reiniciarPartida();
+    78	void turnoBot();
+    79	void victory();
+    80	int xHandler(int);
+    81	int yHandler(int);
+    82	
+    83	// FUNCIONES DE ENSAMBLADOR
+    84	extern void get_current_board(int*);
+    85	extern int check_empty_board();
+    86	extern int is_valid_move(int, int, int);
+    87	extern void make_move(int, int, int);
+    88	extern void next_turn();
+    89	extern void restart_game();
+    90	extern int check_board_victory(int);
+    91	extern int check_game_victory();
+    92	extern int check_board_tie(int);
+    93	extern void bot_move(int*, int*, int*);
+    94	
+    95	// COLORES DEL CSS PARA LOS COLORES DEL BOTÓN
+    96	const char *css_default = "button { background-color: white; color: black; }";
+    97	const char *css_highlight = "button { background-color: #d3d3d3; color: black; }";
+    98	
+    99	int main(int argc, char *argv[])
+   100	{
+   101	
+   102	    gtk_init(&argc, &argv);
+   103	
+   104	    init();
+   105	
+   106	    // Iniciar el bucle principal de GTK
+   107	    gtk_main();
+   108	}
+   109	
+   110	void init()
+   111	{
+   112	    builder = gtk_builder_new_from_file("ultimate_gato_screen.glade");
+   113	    window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
+   114	    fixed = GTK_WIDGET(gtk_builder_get_object(builder, "grid"));
+   115	
+   116	    reiniciarBtn = GTK_WIDGET(gtk_builder_get_object(builder, "reiniciarBtn"));
+   117	    gamemodeSwitch = GTK_WIDGET(gtk_builder_get_object(builder, "gamemodeSwitch"));
+   118	    turnoDeLbl = GTK_WIDGET(gtk_builder_get_object(builder, "turnoDeLbl"));
+   119	    turnoJugadorImg = GTK_WIDGET(gtk_builder_get_object(builder, "turnoJugadorImg"));
+   120	    cambiarTokenBtn = GTK_WIDGET(gtk_builder_get_object(builder, "cambiarTokenBtn"));
+   121	
+   122	    createButtonGrid();
+   123	    createImageGrid();
+   124	
+   125	    // Conectar las señales definidas en el archivo .glade a las funciones correspondientes
+   126	    gtk_builder_connect_signals(builder, NULL);
+   127	
+   128	    // Configuraciones de  juego
+   129	    // Mostrar al inicio que es el turno de O
+   130	    gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), O_BIG);
+   131	    // Conectar el comando de reiniciar con el botón
+   132	    g_signal_connect(reiniciarBtn, "clicked", G_CALLBACK(reiniciarPartida), NULL);
+   133	    g_signal_connect(gamemodeSwitch, "notify::active", G_CALLBACK(switchGamemode), NULL);
+   134	    // Conectar el comando de cambiar el cambiarToken con el boton
+   135	    g_signal_connect(cambiarTokenBtn, "clicked", G_CALLBACK(switchTurno), NULL);
+   136	
+   137	    // Mostrar la ventana
+   138	    gtk_widget_show_all(window);
+   139	
+   140	    // Conectar la señal de cierre de la ventana al programa principal
+   141	    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+   142	}
+   143	
+   144	void createButtonGrid()
+   145	{
+   146	    GtkWidget *boton;
+   147	    struct Coordenada *coord;
+   148	
+   149	    // Posiciones donde se van a ir poniendo los botónes
+   150	    int xInicial = 8;
+   151	    int yInicial = 3;
+   152	    int x = xInicial;
+   153	    int y = yInicial;
+   154	
+   155	    for (int i = 0; i < 9; i++)
+   156	    {
+   157	
+   158	        // Cuando cambian de fila hay que cambiar el Y
+   159	        if (i == 3)
+   160	        {
+   161	            xInicial = x = 8;
+   162	            yInicial = y += 212;
+   163	        }
+   164	        else if (i == 6)
+   165	        {
+   166	            xInicial = x = 8;
+   167	            yInicial = y += 208;
+   168	        }
+   169	
+   170	        for (int j = 0; j < 3; j++)
+   171	        {
+   172	            for (int k = 0; k < 3; k++)
+   173	            {
+   174	
+   175	                boton = gtk_button_new_with_label("");
+   176	                gtk_widget_set_size_request(boton, 50, 50);
+   177	                // TODO: Poner comandos del juego
+   178	
+   179	                // Creo la coordenada para asignarle al boton en el comando
+   180	                coord = (struct Coordenada *)malloc(sizeof(struct Coordenada));
+   181	                coord->x = i;
+   182	                coord->y = j;
+   183	                coord->z = k;
+   184	
+   185	                grid[i][j][k] = boton;
+   186	                g_signal_connect(grid[i][j][k], "clicked", G_CALLBACK(cellClicked), coord);
+   187	                gtk_fixed_put(GTK_FIXED(fixed), grid[i][j][k], x, y);
+   188	
+   189	                x += 60;
+   190	            }
+   191	            x = xInicial;
+   192	            y += 60;
+   193	        }
+   194	        y = yInicial;
+   195	        xInicial = x += 207;
+   196	    }
+   197	}
+   198	
+   199	void createImageGrid()
+   200	{
+   201	    GtkWidget *imagen;
+   202	    int x, y;
+   203	    for (int i = 0; i < 3; i++)
+   204	    {
+   205	        if (i == 0)
+   206	            y = 10;
+   207	        else if (i == 1)
+   208	            y = 223;
+   209	        else if (i == 2)
+   210	            y = 431;
+   211	
+   212	        for (size_t j = 0; j < 3; j++)
+   213	        {
+   214	            if (j == 0)
+   215	                x = 11;
+   216	            else if (j == 1)
+   217	                x = 217;
+   218	            else if (j == 2)
+   219	                x = 423;
+   220	
+   221	            // Crea una nueva imagen
+   222	            imagen = gtk_image_new();
+   223	            gtk_widget_set_size_request(imagen, 166, 160);
+   224	            megaGrid[i][j] = imagen;
+   225	            gtk_fixed_put(GTK_FIXED(fixed), megaGrid[i][j], x, y);
+   226	        }
+   227	    }
+   228	}
+   229	
+   230	void cellClicked(GtkWidget *widget, gpointer data)
+   231	{   
+   232	    
+   233	    gtk_widget_set_sensitive(GTK_WIDGET(cambiarTokenBtn), FALSE);
+   234	    struct Coordenada *coord = (struct Coordenada *)data;
+   235	
+   236	    // TODO: Implementar lógica del gato si es válido poner la casilla ahí
+   237	    if (is_valid_move(coord->x, coord->y, coord->z))
+   238	    {
+   239	
+   240	        GtkWidget *boton = grid[coord->x][coord->y][coord->z];
+   241	
+   242	        printf("Botón en la casilla (%d, %d, %d) presionado\n", coord->x, coord->y, coord->z);
+   243	
+   244	        // Cambia el ícono del botón a la O o la X dependiendo del turno del jugador
+   245	        changeCellIcon(boton);
+   246	        // Le cambia el color al botón a uno gris
+   247	        highlightCell(coord);
+   248	
+   249	        // Coloca la X o la O en la matriz (datos)
+   250	        make_move(coord->x, coord->y, coord->z);
+   251	
+   252	        // Verificar si se hizo una línea de 3
+   253	        if (check_board_victory(coord->x))
+   254	        {
+   255	            changeBigCellIcon(coord->x);
+   256	        }
+   257	        else
+   258	        {
+   259	            // Si no hay una línea de 3, verifica si ese subtablero se llenó
+   260	            check_board_tie(coord->x);
+   261	        }
+   262	
+   263	        // Verifica si el jugador ganó el juego
+   264	        if (check_game_victory())
+   265	        {
+   266	            victory();
+   267	            return;
+   268	        }
+   269	
+   270	        switchTurno();
+   271	
+   272	
+   273	        if (botPlay)
+   274	        {
+   275	            turnoBot();
+   276	        }
+   277	    }
+   278	    else{
+   279	        printf("Botón en la casilla (%d, %d, %d) inavlida!\n", coord->x, coord->y, coord->z);
+   280	    }
+   281	}
+   282	
+   283	void botClicked (GtkWidget *widget, gpointer data) {
+   284	    struct Coordenada *coord = (struct Coordenada *)data;
+   285	
+   286	    if (is_valid_move(coord->x, coord->y, coord->z))
+   287	    {
+   288	        GtkWidget *boton = grid[coord->x][coord->y][coord->z];
+   289	
+   290	        printf("Botón en la casilla (%d, %d, %d) presionado\n", coord->x, coord->y, coord->z);
+   291	
+   292	        // Cambia el ícono del botón a la O o la X dependiendo del turno del jugador
+   293	        changeCellIcon(boton);
+   294	        // Le cambia el color al botón a uno gris
+   295	        highlightCell(coord);
+   296	
+   297	        // Coloca la X o la O en la matriz (datos)
+   298	        make_move(coord->x, coord->y, coord->z);
+   299	
+   300	        // Verificar si se hizo una línea de 3
+   301	        if (check_board_victory(coord->x))
+   302	        {
+   303	            changeBigCellIcon(coord->x);
+   304	        }
+   305	        else
+   306	        {
+   307	            // Si no hay una línea de 3, verifica si ese subtablero se llenó
+   308	            check_board_tie(coord->x);
+   309	        }
+   310	
+   311	        // Verifica si el jugador ganó el juego
+   312	        if (check_game_victory())
+   313	        {
+   314	            victory();
+   315	            return;
+   316	        }
+   317	
+   318	        switchTurno();
+   319	    }
+   320	    else{
+   321	        printf("Botón en la casilla (%d, %d, %d) inavlida!\n", coord->x, coord->y, coord->z);
+   322	    }
+   323	}
+   324	void changeCellIcon(GtkWidget *boton)
+   325	{
+   326	    GtkWidget *imagen;
+   327	
+   328	    if (turno == 0)
+   329	    { // Si es turno de O
+   330	        imagen = gtk_image_new_from_file(O_SMALL);
+   331	    }
+   332	    else
+   333	    { // Si es turno de X
+   334	        imagen = gtk_image_new_from_file(X_SMALL);
+   335	    }
+   336	
+   337	    if (imagen == NULL)
+   338	    {
+   339	        printf("Error al cargar la imagen.\n");
+   340	    }
+   341	
+   342	    gtk_button_set_image(GTK_BUTTON(boton), imagen);
+   343	    gtk_widget_queue_draw(GTK_WIDGET(boton));
+   344	    gtk_widget_show(imagen); // Asegurarse de que la imagen sea visible
+   345	}
+   346	
+   347	void changeButtonColor(GtkWidget *boton, const char *css)
+   348	{
+   349	    GtkCssProvider *provider = gtk_css_provider_new();
+   350	    GtkStyleContext *context = gtk_widget_get_style_context(boton);
+   351	
+   352	    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+   353	    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+   354	
+   355	    g_object_unref(provider);
+   356	}
+   357	
+   358	void highlightCell(struct Coordenada *coord)
+   359	{
+   360	    int x = coord->x;
+   361	    int y = coord->y;
+   362	    int z = coord->z;
+   363	
+   364	    for (int i = 0; i < 9; i++)
+   365	    {
+   366	        for (int j = 0; j < 3; j++)
+   367	        {
+   368	            for (int k = 0; k < 3; k++)
+   369	            {
+   370	                GtkWidget *boton = grid[i][j][k];
+   371	                if (i == x && j == y && k == z)
+   372	                {
+   373	                    // Le cambia el color del botón a uno gris
+   374	                    changeButtonColor(boton, css_highlight);
+   375	                }
+   376	                else
+   377	                {
+   378	                    // Restablece el color predeterminado del boton
+   379	                    changeButtonColor(boton, css_default);
+   380	                }
+   381	            }
+   382	        }
+   383	    }
+   384	}
+   385	
+   386	void switchTurno()
+   387	{
+   388	
+   389	    // Cambia el turno X = 1 / O = 0
+   390	    turno = 1 - turno;
+   391	    // Cambia el turno en la lógica de ensamblador
+   392	    next_turn();
+   393	
+   394	    if (turno == 0)
+   395	    {
+   396	        gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), O_BIG);
+   397	    }
+   398	    else
+   399	    {
+   400	        gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), X_BIG);
+   401	    }
+   402	}
+   403	
+   404	// FUncion para cambiar el icono del jugador que inicia.
+   405	void switchStarter()
+   406	{
+   407	    if (check_empty_board())
+   408	    {
+   409	        next_turn();
+   410	
+   411	        if (turno == 0)
+   412	        {
+   413	            gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), O_BIG);
+   414	        }
+   415	        else
+   416	        {
+   417	            gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), X_BIG);
+   418	        }
+   419	    }
+   420	    else
+   421	    {
+   422	        GtkWidget *dialog = gtk_dialog_new_with_buttons(
+   423	            "",
+   424	            GTK_WINDOW(window),
+   425	            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+   426	            "_OK",
+   427	            GTK_RESPONSE_OK,
+   428	            NULL);
+   429	
+   430	        GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+   431	        GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+   432	        gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
+   433	        gtk_container_add(GTK_CONTAINER(content_area), vbox);
+   434	
+   435	        // Creo el label con el mensaje"
+   436	        GtkWidget *label_title = gtk_label_new("NO SE PUEDE CAMBIAR ICONO");
+   437	        gtk_box_pack_start(GTK_BOX(vbox), label_title, TRUE, TRUE, 10);
+   438	
+   439	        gtk_widget_show_all(dialog);
+   440	
+   441	        // Esperar la confirmación del usuario y cerrar el dialog
+   442	        gtk_dialog_run(GTK_DIALOG(dialog));
+   443	        gtk_widget_destroy(dialog);
+   444	    }
+   445	}
+   446	
+   447	void changeBigCellIcon(int gridSecundario)
+   448	{
+   449	    int i = gridSecundario % 3;
+   450	    int j = gridSecundario / 3;
+   451	
+   452	    GtkWidget *imagen = megaGrid[j][i];
+   453	
+   454	    if (turno == 0)
+   455	    {
+   456	        gtk_image_set_from_file(GTK_IMAGE(imagen), O_BIG);
+   457	    }
+   458	    else
+   459	    {
+   460	        gtk_image_set_from_file(GTK_IMAGE(imagen), X_BIG);
+   461	    }
+   462	}
+   463	
+   464	void switchGamemode(GtkSwitch *switch_widget, GParamSpec *pspec, gpointer user_data)
+   465	{
+   466	gboolean state = gtk_switch_get_active(switch_widget);
+   467	    if (state) {
+   468	        g_print("Modo Singleplayer activado\n");
+   469	        botPlay = 1;
+   470	        reiniciarPartida();
+   471	    } else {
+   472	        g_print("Modo Multijugador activado\n");
+   473	        botPlay = 0;
+   474	        reiniciarPartida();
+   475	    }
+   476	}
+   477	void reiniciarPartida(){
+   478	    //Settea el turno inicial a O
+   479	    turno = 0;
+   480	    gtk_image_set_from_file(GTK_IMAGE(turnoJugadorImg), O_BIG);
+   481	
+   482	    //Limpia el tablero de matrices en el ensamblador
+   483	    restart_game();
+   484	
+   485	    //Borra las imágenes y rehabilita los botones
+   486	    for(int i=0; i<9; i++){
+   487	        for(int j=0; j<3; j++){
+   488	            for(int k=0; k<3; k++){
+   489	                gtk_button_set_image(GTK_BUTTON(grid[i][j][k]), NULL);
+   490	                gtk_widget_set_sensitive(GTK_WIDGET(grid[i][j][k]), TRUE); 
+   491	                changeButtonColor(grid[i][j][k], css_default);
+   492	            }
+   493	        }
+   494	    }
+   495	
+   496	    
+   497	    for(int j=0; j<3; j++){
+   498	        for(int k=0; k<3; k++){
+   499	            gtk_image_set_from_file(GTK_IMAGE(megaGrid[j][k]), NULL);
+   500	        }
+   501	    }
+   502	
+   503	    gtk_widget_set_sensitive(GTK_WIDGET(cambiarTokenBtn), TRUE);
+   504	
+   505	    switchTurno();
+   506	}
+   507	
+   508	void turnoBot()
+   509	{
+   510	    int x, y, z;
+   511	    GtkWidget *boton;
+   512	    struct Coordenada *coord;
+   513	    coord = (struct Coordenada *)malloc(sizeof(struct Coordenada));
+   514	
+   515	    bot_move(&y,&z, &x);
+   516	
+   517	    coord->x = x;
+   518	    coord->y = y;
+   519	    coord->z = z;
+   520	
+   521	    boton = grid[coord->x][coord->y][coord->z];
+   522	
+   523	    botClicked(boton, coord);
+   524	}
+   525	
+   526	void victory()
+   527	{
+   528	// Crear un diálogo para mostrar quién ganó
+   529	    GtkWidget *dialog = gtk_dialog_new_with_buttons(
+   530	        "",
+   531	        GTK_WINDOW(window),
+   532	        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+   533	        "_OK",
+   534	        GTK_RESPONSE_OK,
+   535	        NULL);
+   536	
+   537	    // Crear un contenedor para los widgets
+   538	    GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+   539	    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+   540	    gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
+   541	    gtk_container_add(GTK_CONTAINER(content_area), vbox);
+   542	
+   543	    // Incrementar el puntaje y establecer imagen del ganador
+   544	    GtkWidget *imagen = gtk_image_new();
+   545	    if (turno == 0)
+   546	    {   
+   547	        pointP1++;
+   548	        gtk_image_set_from_file(GTK_IMAGE(imagen), O_BIG);
+   549	    }
+   550	    else
+   551	    {
+   552	        pointP2++;
+   553	        gtk_image_set_from_file(GTK_IMAGE(imagen), X_BIG);
+   554	    }
+   555	
+   556	    // Crear el label del ganador
+   557	    GtkWidget *label_title = gtk_label_new("¡GANADOR!");
+   558	    gtk_box_pack_start(GTK_BOX(vbox), label_title, TRUE, TRUE, 10);
+   559	
+   560	    // Crear el label con las estadísticas de puntos
+   561	    char stats[50];
+   562	    snprintf(stats, sizeof(stats), "P1 Wins: %d | P2 Wins: %d", pointP1, pointP2);
+   563	    GtkWidget *label_stats = gtk_label_new(stats);
+   564	    gtk_box_pack_start(GTK_BOX(vbox), label_stats, TRUE, TRUE, 10);
+   565	
+   566	    // Centrar la imagen del ganador
+   567	    gtk_widget_set_halign(imagen, GTK_ALIGN_CENTER);
+   568	    gtk_box_pack_start(GTK_BOX(vbox), imagen, TRUE, TRUE, 10);
+   569	
+   570	    // Mostrar el dialog
+   571	    gtk_widget_show_all(dialog);
+   572	
+   573	    // Esperar la confirmación del usuario y cerrar el dialog
+   574	    gtk_dialog_run(GTK_DIALOG(dialog));
+   575	    gtk_widget_destroy(dialog);
+   576	
+   577	    // Deshabilitar todos los botones para que no puedan seguir jugando hasta que reinicien
+   578	    for (int i = 0; i < 9; i++)
+   579	    {
+   580	        for (int j = 0; j < 3; j++)
+   581	        {
+   582	            for (int k = 0; k < 3; k++)
+   583	            {
+   584	                gtk_widget_set_sensitive(GTK_WIDGET(grid[i][j][k]), FALSE);
+   585	            }
+   586	        }
+   587	    }
+   588	}

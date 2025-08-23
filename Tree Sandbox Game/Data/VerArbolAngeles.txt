@@ -1,0 +1,243 @@
+
+0 DIOS
+
+     1 Sefafines
+
+          2 Hijo Izquierdo: [Nombre: Azrael, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Miguel, Versión: 1, Id del humano Reencarnado: 98085]
+
+                    4 Hijo Izquierdo: [Nombre: Miguel, Versión: 1, Id del humano Reencarnado: 98085]
+
+                    4 Hijo Medio: [Nombre: Uriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Rafael, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Sariel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Gabriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Miguel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Raguel, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Rafael, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Nuriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Aniel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Sariel, Versión: 1, Id del humano Reencarnado: 0]
+
+          2 Hijo Medio: [Nombre: Raguel, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Miguel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Rafael, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Shamsiel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Azrael, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Shamsiel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Aniel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Gabriel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Uriel, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Rafael, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Nuriel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Uriel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Azrael, Versión: 2, Id del humano Reencarnado: 0]
+
+          2 Hijo Derecho: [Nombre: Shamsiel, Versión: 1, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Miguel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Azrael, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Uriel, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Azrael, Versión: 4, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Miguel, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Sariel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Shamsiel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Uriel, Versión: 5, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Rafael, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Shamsiel, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Aniel, Versión: 3, Id del humano Reencarnado: 0]
+
+     1 Querubines
+
+          2 Hijo Izquierdo: [Nombre: Nuriel, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Raguel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Raguel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Uriel, Versión: 6, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Sariel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Uriel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Sariel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Nuriel, Versión: 3, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Azrael, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Rafael, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Uriel, Versión: 8, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Aniel, Versión: 4, Id del humano Reencarnado: 0]
+
+          2 Hijo Medio: [Nombre: Azrael, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Azrael, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Sariel, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Aniel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Nuriel, Versión: 4, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Gabriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Azrael, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Shamsiel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Nuriel, Versión: 5, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Rafael, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Aniel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Gabriel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Gabriel, Versión: 4, Id del humano Reencarnado: 0]
+
+          2 Hijo Derecho: [Nombre: Shamsiel, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Nuriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Gabriel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Rafael, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Rafael, Versión: 5, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Raguel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Sariel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Raguel, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Rafael, Versión: 6, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Azrael, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Raguel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Aniel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Rafael, Versión: 7, Id del humano Reencarnado: 0]
+
+     1 Trono
+
+          2 Hijo Izquierdo: [Nombre: Uriel, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Uriel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Sariel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Gabriel, Versión: 6, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Miguel, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Raguel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Sariel, Versión: 7, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Uriel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Nuriel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Nuriel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Shamsiel, Versión: 8, Id del humano Reencarnado: 0]
+
+          2 Hijo Medio: [Nombre: Sariel, Versión: 2, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Miguel, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Miguel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Sariel, Versión: 8, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Sariel, Versión: 9, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Uriel, Versión: 3, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 9, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Azrael, Versión: 6, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Miguel, Versión: 4, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Rafael, Versión: 5, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Gabriel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Sariel, Versión: 10, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Uriel, Versión: 9, Id del humano Reencarnado: 0]
+
+          2 Hijo Derecho: [Nombre: Miguel, Versión: 3, Id del humano Reencarnado: 0]
+
+               3 Hijo Izquierdo: [Nombre: Aniel, Versión: 1, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Nuriel, Versión: 8, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Azrael, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Azrael, Versión: 8, Id del humano Reencarnado: 0]
+
+               3 Hijo Medio: [Nombre: Azrael, Versión: 4, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Raguel, Versión: 7, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Nuriel, Versión: 9, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Rafael, Versión: 8, Id del humano Reencarnado: 0]
+
+               3 Hijo Derecho: [Nombre: Gabriel, Versión: 2, Id del humano Reencarnado: 0]
+
+                    4 Hijo Izquierdo: [Nombre: Shamsiel, Versión: 10, Id del humano Reencarnado: 0]
+
+                    4 Hijo Medio: [Nombre: Rafael, Versión: 9, Id del humano Reencarnado: 0]
+
+                    4 Hijo Derecho: [Nombre: Azrael, Versión: 9, Id del humano Reencarnado: 0]
+

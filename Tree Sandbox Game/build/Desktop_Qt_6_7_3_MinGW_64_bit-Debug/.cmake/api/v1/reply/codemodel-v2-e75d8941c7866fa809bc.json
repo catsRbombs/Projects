@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-5cb0db10d60a67811a45.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "skibidi",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "skibidi::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-skibidi-Debug-e44b7d4a53e7434711d7.json",
+					"name" : "skibidi",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "skibidi_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-skibidi_autogen-Debug-9e4d76b0aa2a7274bfbc.json",
+					"name" : "skibidi_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "skibidi_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-skibidi_autogen_timestamp_deps-Debug-f59475bb5bb5de610699.json",
+					"name" : "skibidi_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug",
+		"source" : "E:/_repositorios/ED-2-QT/skibidi"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

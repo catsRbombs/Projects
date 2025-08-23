@@ -1,0 +1,15 @@
+
+0 Raiz: [ID: 44062, Nombre: Madison Kelly  ]
+
+     1 Hijo Izquierdo: [ID: 15867, Nombre: Felix Parker  ]
+
+          2 Hijo Izquierdo: [ID: 39, Nombre: Ethan Moreno  ]
+
+          2 Hijo Derecho: [ID: 29046, Nombre: Vanessa Thompson  ]
+
+     1 Hijo Derecho: [ID: 71175, Nombre: Blake Brown  ]
+
+          2 Hijo Izquierdo: [ID: 58552, Nombre: Julian Johnson  ]
+
+          2 Hijo Derecho: [ID: 84857, Nombre: Willow Wong  ]
+

@@ -1,0 +1,20 @@
+
+Ultimo nivel del arbol de la humanidad
+
+
+2	Addison	Brown  	Andorra  	Vivo	Arquitecto  	Budista  	2024-11-13 14:28:52	0	0	0	0	0	0	0	10	26653	20082	90944	36189	40549	42629	22109	74242	23722	85069	0
+
+13922	Adam	Campbell  	Jordania  	Vivo	Agente de viajes  	Budista  	2024-11-13 14:29:04	0	0	0	0	0	0	0	10	20082	36189	60564	40549	42629	53961	22109	74242	23722	85069	0
+
+26454	Joshua	Lee  	Jamaica  	Vivo	Asesor educativo  	Musulman  	2024-11-13 14:29:04	0	0	0	0	0	0	0	10	72201	22041	31220	86641	53961	28534	75881	35094	82450	16641	0
+
+39288	Sophia	Rodriguez  	Canada  	Vivo	Gerente de marketing  	Pagano  	2024-11-13 14:28:52	0	0	0	0	0	0	0	8	21923	64835	28488	37648	23728	77755	61808	7968	0	0	0
+
+52969	Brianna	Reyes  	Etiopia  	Vivo	Ingeniero de software  	Rastafari  	2024-11-13 14:29:04	0	0	0	0	0	0	0	10	49409	48089	18249	19902	90769	36062	16102	19969	6102	74142	0
+
+65640	Andrew	Williams  	Alemania  	Vivo	Especialista en relaciones publicas  	Cristiano  	2024-11-13 14:28:52	0	0	0	0	0	0	0	3	90107	30668	62960	0	0	0	0	0	0	0	0
+
+78828	Jonathan	Pineda  	Cuba  	Vivo	Piloto de avion  	Hindu  	2024-11-13 14:28:52	0	0	0	0	0	0	0	10	34455	18948	30668	46588	24428	18135	97068	26268	1548	86175	0
+
+92668	Adam	Williams  	Alemania  	Vivo	Ingeniero  	Hindu  	2024-11-13 14:28:52	0	0	0	0	0	0	0	10	90107	34455	18948	30668	46588	24428	65640	18135	88507	25486	0
+

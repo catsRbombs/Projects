@@ -1,0 +1,9 @@
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/skibidi.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/skibidi_autogen_timestamp_deps.dir
+E:/_repositorios/ED-2-QT/skibidi/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/skibidi_autogen.dir

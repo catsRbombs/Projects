@@ -1,0 +1,5 @@
+graph G {
+  FuenteDeEnergia1;
+  Mercado1;
+  FuenteDeEnergia1 -- Mercado1;
+}

@@ -1,0 +1,1032 @@
+     1	; SUPERGATO
+     2	; Proyecto #2
+     3	
+     4	; IC-3101 Arquitectura de Computadoras
+     5	
+     6	; Instituto Tecnológico de Costa Rica
+     7	; Campus Tecnológico Central Cartago
+     8	; Escuela de Ingeniería en Computación                              
+     9	; II Semestre 2024
+    10	; Prof. M.Sc. Esteban Arias Méndez
+    11	
+    12	; Efraim Cuevas Aguilar        
+    13	; Carné: 2024109746                                                    
+    14	; Fabián Mata Salas
+    15	; Carné: 2024188730
+    16	
+    17	
+    18	
+    19	
+    20	%include "io.mac"
+    21	
+    22	
+    23	
+    24	.DATA                 
+    25	    current_board       dd -1                          ; Va del 0-8, -1 es que puede poner en cualquier casilla
+    26	
+    27	    ; Las X son 1
+    28	    ; Las O son 2
+    29	    current_turn        dd 2                           ; Turnos para guardar el dato en las casillas
+    30	
+    31	    fake_turn dd 1          ;Variable para manipulacion de turno del algoritmo del bot
+    32	
+    33	    ; Matrices para los tableros secundarios
+    34	    board_0x0           times 9 dd 0
+    35	    board_0x1           times 9 dd 0
+    36	    board_0x2           times 9 dd 0
+    37	
+    38	    board_1x0           times 9 dd 0
+    39	    board_1x1           times 9 dd 0
+    40	    board_1x2           times 9 dd 0
+    41	
+    42	    board_2x0           times 9 dd 0
+    43	    board_2x1           times 9 dd 0
+    44	    board_2x2           times 9 dd 0
+    45	
+    46	    ; Matriz de punteros a los tableros
+    47	    board_matrix dd board_0x0, board_0x1, board_0x2
+    48	                dd board_1x0, board_1x1, board_1x2
+    49	                dd board_2x0, board_2x1, board_2x2
+    50	
+    51	    ; Tablero principal con 9 casillas
+    52	    main_board          times 9 dd 0
+    53	
+    54	section .text
+    55	global is_valid_move
+    56	global make_move
+    57	global next_turn
+    58	global restart_game
+    59	global check_board_victory
+    60	global check_game_victory
+    61	global check_board_tie
+    62	global check_empty_board
+    63	global bot_move
+    64	global get_current_board
+    65	;---------------------------------------------------------------- is_valid_move
+    66	; Esta función valida si el movimiento que va a hacer un jugador es valida
+    67	; Entrada: 3 números para buscar el número de la posición
+    68	; Salida: 1 si es una posición válida, 0 si no
+    69	;----------------------------------------------------------------
+    70	is_valid_move:
+    71	    enter 0,0
+    72	
+    73	    ;Mover los valores a los registros
+    74	    mov EAX, [EBP+8]        ; Obtengo el numero del tablero
+    75	
+    76	    mov ECX, [EBP+12]       ; Obtengo la posición en el tablero (y)
+    77	    mov EDX, [EBP+16]       ; Obtengo la posición en el tablero (x)
+    78	    
+    79	    ;Compruebo si el jugador hizo la jugada en un tablero válido
+    80	    cmp dword[current_board], -1 ; Verifica si tiene libertad para poner en cualquier tablero
+    81	    je validate_position    ; Si si lo tiene, salta a ver si no está haciendo una jugada en una casilla ya usada
+    82	
+    83	    cmp EAX, [current_board]; Verifica si está haciendo la jugada en un tablero válido
+    84	    je validate_position    ; Si son iguales, salta a ver si no está haciendo una jugada en una casilla ya usada
+    85	
+    86	
+    87	invalid_cell:
+    88	    ;Si no entra en ninguno retorna false (0)
+    89	    xor EAX, EAX
+    90	    leave
+    91	    ret
+    92	
+    93	validate_position:
+    94	
+    95	    ;Conseguir la dirección del tablero que se está jugando
+    96	    imul EAX, 4                     ; Lo multiplica por el tamaño de cada dirección
+    97	    add EAX, board_matrix           ; Añado la dirección base del array de tableros
+    98	    
+    99	    mov EAX, [EAX]                  ; Obtengo la dirección del tablero de juego donde se hizo la jugada
+   100	    
+   101	    ;Calculo la posición dentro del tablero 3x3
+   102	    ;Le sumo los índices con lo tamaños a la matriz que tengo
+   103	    ;Dirección de la casilla = base_tablero + (x + y*3) * 4
+   104	    imul ECX, 3                     ; ECX = y * 3
+   105	    add ECX, EDX                    ; ECX = x + (y * 3)
+   106	    imul ECX, 4                     ; EXC = 4(x + (y * 3))
+   107	    
+   108	    add EAX, ECX                    ; Le sumo la dirección de la casilla a la dirección base del tablero
+   109	    
+   110	    cmp dword[EAX], 0               ; Verifica que sea una casilla vacía
+   111	    jne invalid_cell                ; Salta a retornar si no es valido
+   112	
+   113	    ; Si no entra en ninguno retorna true (1)
+   114	    mov EAX, 1
+   115	    leave
+   116	    ret
+   117	
+   118	
+   119	;---------------------------------------------------------------- make_move
+   120	; Esta función Coloca un 1 (X) o un 2 (O) dependiendo de quién sea el turno
+   121	; Entrada: 3 números para buscar el número de la posición
+   122	; Salida: void
+   123	;----------------------------------------------------------------
+   124	make_move:
+   125	    enter 0,0
+   126	
+   127	    ;Mover los valores a los registros
+   128	    mov EAX, [EBP+8]        ; Obtengo el numero del tablero
+   129	
+   130	    mov ECX, [EBP+12]       ; Obtengo la posición en el tablero (y)
+   131	    mov EDX, [EBP+16]       ; Obtengo la posición en el tablero (x)
+   132	
+   133	    ;Conseguir la dirección del tablero que se está jugando
+   134	    imul EAX, 4                     ; Lo multiplica por el tamaño de cada dirección
+   135	    add EAX, board_matrix           ; Añado la dirección base del array de tableros
+   136	    
+   137	    mov EAX, [EAX]                  ; Obtengo la dirección del tablero de juego donde se hizo la jugada
+   138	    
+   139	    ;Calculo la posición dentro del tablero 3x3
+   140	    ;Le sumo los índices con lo tamaños a la matriz que tengo
+   141	    ;Dirección de la casilla = base_tablero + (x + y*3) * 4
+   142	    imul ECX, 3                     ; ECX = y * 3
+   143	    add ECX, EDX                    ; ECX = x + (y * 3)
+   144	
+   145	    ; IMPORTANTE: aquí se guarda la posición del siguiente tablero que se puede jugar
+   146	    push ECX                        ; Mete el número a la pila para llamar a la función
+   147	    call set_current_board          ; Llama a la función para colocar el current board del siguiente turno
+   148	
+   149	    imul ECX, 4                     ; EXC = 4(x + (y * 3))
+   150	    
+   151	    add EAX, ECX                    ; Le sumo la dirección de la casilla a la dirección base del tablero
+   152	
+   153	    mov EDX, [current_turn]         ; Muevo el 1 o 2 para meterlo a la matriz
+   154	
+   155	    ; Mueve el número de La X o O a la casilla en el EAX
+   156	    mov [EAX], EDX
+   157	
+   158	    leave 
+   159	    ret 12
+   160	
+   161	;---------------------------------------------------------------- set_current_board
+   162	; Coloca el tablero actual para el siguiente turno, así que valida si tiene que ser -1 (free placement)
+   163	; Entrada: el número del tablero grande en la pila
+   164	; Salida: void pero el current_board cambia
+   165	;----------------------------------------------------------------
+   166	set_current_board: 
+   167	    enter 0,0
+   168	
+   169	    mov EDX, [EBP+8]        ; Obtengo el numero de la pila
+   170	
+   171	    imul EDX, 4             ; Lo multiplico para contar por el tamaño de cada espacio
+   172	
+   173	    add EDX, main_board     ; Sumo la dirección base del tablero principal
+   174	
+   175	    cmp dword[EDX], 0       ; Verifico si ese tablero ya está ganado
+   176	    jne board_already_won   ; Si no está vacío, entonces salta porque ya está ganado
+   177	
+   178	    mov EDX, [EBP+8]        ; Obtengo el numero de la pila de nuevo
+   179	    mov dword[current_board], EDX; Setteo el número como el siguiente tablero donde se debe jugar
+   180	
+   181	
+   182	    leave
+   183	    ret 4
+   184	
+   185	board_already_won:
+   186	    mov dword[current_board], -1 ; Setteo el tablero en -1 para poder colocar en cualquier tablero el siguiente turno
+   187	
+   188	    leave
+   189	    ret 4
+   190	
+   191	;---------------------------------------------------------------- next_turn
+   192	; Simplemente cambia el turno para O o X
+   193	; Entrada: void
+   194	; Salida: void 
+   195	;----------------------------------------------------------------
+   196	next_turn:
+   197	    cmp dword[current_turn], 2    ; Verifica si el turno actual era de O
+   198	    je Os_turn                    ; Si lo es, salta para cambiarlo al turno de X
+   199	
+   200	    ; Si no, entonces es turno de X, así que hay que hacer lo opuesto
+   201	    mov dword[current_turn], 2
+   202	    ret
+   203	
+   204	Os_turn:
+   205	    mov dword[current_turn], 1
+   206	    ret
+   207	
+   208	
+   209	;---------------------------------------------------------- restart_game
+   210	; Esta función reinicia el estado del juego y no tiene ni entradas ni salidas
+   211	; current_turn = 2
+   212	; current_board = -1
+   213	; Todos los valores en los tableros secundarios y el tablero principal = 0
+   214	;----------------------------------------------------------
+   215	;---------------------------------------------------------- restart_game
+   216	; Esta función reinicia el estado del juego y no tiene ni entradas ni salidas
+   217	; current_turn = 2
+   218	; current_board = -1
+   219	; Todos los valores en los tableros secundarios y el tablero principal = 0
+   220	;----------------------------------------------------------
+   221	restart_game:
+   222	    enter 0, 0             
+   223	    ; Guarda los datos de todos los registros para que no haga segfault a la hora de retornar a C
+   224	    pushad                            
+   225	
+   226	    mov dword[current_turn], 2      ; Establece current_turn a 2    
+   227	    mov dword[current_board], -1    ; Establece current_board a -1
+   228	
+   229	    ; Poner en 0 todos los valores de los tableros secundarios
+   230	    ; Iterar 9 tableros
+   231	    mov ECX, 9              ; Es el número de tableros secundarios (9 matrices)
+   232	    mov ESI, board_matrix   ; Consigue la dirección base de board_matrix
+   233	
+   234	reset_boards:
+   235	    mov EDI, [ESI]          ; Obtener dirección del tablero actual
+   236	    add ESI, 4              ; Apuntar al siguiente puntero en board_matrix
+   237	    mov EAX, 0              ; Valor para llenar los tableros
+   238	
+   239	    mov EDX, 9              ; Cada tablero tiene 9 casillas
+   240	
+   241	reset_single_board:
+   242	    mov dword[EDI], EAX     ; Escribir 0 en la casilla actual
+   243	    add EDI, 4              ; Avanzar al siguiente elemento del tablero
+   244	    dec EDX                 ; Decrementar el contador de casillas
+   245	    jnz reset_single_board  ; Repetir hasta vaciar el tablero
+   246	
+   247	    dec ECX                 ; Decrementar el contador de tableros
+   248	    jnz reset_boards        ; Repetir para todos los tableros
+   249	
+   250	    ; Ahora se va a poner en 0 todas las casillas del tablero principal
+   251	    mov ECX, 9              ; Número de casillas en main_board
+   252	    mov EDI, main_board     ; Dirección base de main_board
+   253	
+   254	reset_main_board:
+   255	    mov dword[EDI], 0       ; Escribir 0 en la casilla actual
+   256	    add EDI, 4              ; Avanzar al siguiente elemento
+   257	    dec ECX                 ; Decrementar el contador
+   258	    jnz reset_main_board    ; Repetir hasta vaciar el tablero principal
+   259	
+   260	    popad
+   261	    leave
+   262	    ret
+   263	
+   264	;---------------------------------------------------------------- check_board_victory
+   265	; Pasándole el número del tablero, chequéa si se hizo una línea de 3
+   266	; También completa una casilla en el tablero principa si hubo una vistoria
+   267	; Entrada: número del tablero en la pila
+   268	; Salida: 0 false, 1 true
+   269	;----------------------------------------------------------------
+   270	check_board_victory:
+   271	    enter 0,0
+   272	
+   273	    mov EDX, [EBP+8]        ; Obtengo el numero de la pila
+   274	    imul EDX, 4             ; Lo multiplico para contar por el tamaño de cada espacio
+   275	
+   276	    pushad                  ; Guarda todos los registros en la pila para el final
+   277	
+   278	    mov ESI, board_matrix   ; Cargo la dirección base del board_matrix
+   279	    add ESI, EDX            ; Le sumo la cantidad del EDX para llegar al tablero correcto
+   280	    mov ESI, [ESI]          ; Cargo el tablero correcto para revisarlo en board_check
+   281	
+   282	    call board_check        ; Revisa si en ese tablero hubo una victoria
+   283	
+   284	    cmp EAX, 1              ; Compara si el jugador ganó
+   285	    jne no_board_victory          ; Si no hay victoria, salta
+   286	
+   287	    ; Si pasó, entonces ese tablero está completo
+   288	    ; Ahora en el tablero principal hay que dejar un 1 (X) o un 2 (O)
+   289	    mov ECX, [current_turn] ; Carga el símbolo que está jugando (número)
+   290	    add EDX, main_board     ; Le sumo al EDX la dirección base del tablero principal
+   291	    mov [EDX], ECX          ; Guardo en ese tablero el valor
+   292	
+   293	    ; Se establece colocamiento libre para el siguiente turno
+   294	    mov dword[current_board], -1
+   295	
+   296	    popad                   ; Restauro todos los registros
+   297	
+   298	    mov EAX, 1              ; Muevo un 1 al EAX para retornar true
+   299	
+   300	    leave
+   301	    ret 4
+   302	
+   303	no_board_victory:
+   304	    popad                   ; Restaura todos los registros
+   305	    xor EAX, EAX            ; Retorna 0
+   306	    leave
+   307	    ret
+   308	
+   309	
+   310	;---------------------------------------------------------------- check_game_victory
+   311	; Revisa si en el tablero principal el jugador hizo una línea de 3
+   312	; Entrada: void
+   313	; Salida: 0 false, 1 true 
+   314	;----------------------------------------------------------------
+   315	check_game_victory:
+   316	    pushad                  ; Guarda todos los registros en la pila para el final
+   317	
+   318	    mov ESI, main_board     ; Mueve el tablero principal para llamar a board_check
+   319	    call board_check        
+   320	
+   321	    cmp EAX, 1              ; Compara si el jugador ganó
+   322	    jne no_victory          ; Si no hay victoria, salta
+   323	
+   324	    ; Si pasó, ganó el jugador del turno actual
+   325	    popad                   ; Restaura todos los registros
+   326	    mov EAX, 1              ; Retorna 1
+   327	    ret
+   328	
+   329	no_victory:
+   330	    popad                   ; Restaura todos los registros
+   331	    xor EAX, EAX            ; Retorna 0
+   332	    ret
+   333	
+   334	
+   335	;---------------------------------------------------------------- board_check
+   336	; Revisa el tablero que le pasaron a ver si hay una línea horizontal, vertical o diagonal
+   337	; Entrada: la dirección del tablero en ESI
+   338	; Salida: 0 false, 1 true en EAX
+   339	;----------------------------------------------------------------
+   340	board_check:
+   341	    mov EDI, [current_turn] ; Carga el jugador al que se va a revisar si hizo una línea de 3
+   342	
+   343	    ; Revisar las filas (horizontalmente)
+   344	    mov ECX, 3              ; Es la cantidad de veces de revisiones horizontales
+   345	    mov EBX, ESI            ; Copia la dirección del tablero porque este se va a manipular
+   346	horizontal_check:
+   347	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   348	    jne horizontal_jump     ; Salta a la siguiente fila si no son iguales
+   349	
+   350	    cmp dword [EBX+4], EDI  ; Verifica si en la segunda casilla está el mismo símbolo
+   351	    jne horizontal_jump     ; Salta a la siguiente fila si no son iguales
+   352	
+   353	    cmp dword [EBX+8], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   354	    jne horizontal_jump     ; Salta a la siguiente fila si no son iguales
+   355	
+   356	    ; Si llega acá, hay una línea horizontal de 3 Os o Xs
+   357	    mov EAX, 1
+   358	    ret
+   359	
+   360	horizontal_jump:
+   361	    add EBX, 12             ; Salta a la siguiente fila a evaluar
+   362	    dec ECX                 ; Decrementa el contador
+   363	    jnz horizontal_check    ; Repetir hasta recorrer las 3 filas
+   364	
+   365	    ; Revisar las columnas (verticalmente)
+   366	    mov ECX, 3              ; Es la cantidad de veces de revisiones verticales
+   367	    mov EBX, ESI            ; Copia la dirección del tablero porque este se va a manipular
+   368	vertical_check:
+   369	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   370	    jne vertical_jump       ; Salta a retornar false porque no hay ninguna línea de 3
+   371	    
+   372	    cmp dword [EBX+12], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   373	    jne vertical_jump       ; Salta a retornar false porque no hay ninguna línea de 3
+   374	    
+   375	    cmp dword [EBX+24], EDI ; Verifica si en la tercera casilla está el mismo símbolo
+   376	    jne vertical_jump       ; Salta a retornar false porque no hay ninguna línea de 3
+   377	    
+   378	    ; Si llega acá, hay una línea vertical de 3 Os o Xs
+   379	    mov EAX, 1
+   380	    ret
+   381	    
+   382	vertical_jump:
+   383	    add EBX, 4              ; Salta a la siguiente columna a evaluar
+   384	    dec ECX                 ; Decrementa el contador
+   385	    jnz vertical_check      ; Repetir hasta recorrer las 3 columnas
+   386	
+   387	    ; Revisar en diagonal hacia abajo
+   388	down_diagonal_check:
+   389	    cmp dword [ESI], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   390	    jne upper_diagonal_check; Salta a revisar la diagonal hacia arriba si no son iguales
+   391	    
+   392	    cmp dword [ESI+16], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   393	    jne upper_diagonal_check; Salta a revisar la diagonal hacia arriba si no son iguales
+   394	    
+   395	    cmp dword [ESI+32], EDI ; Verifica si en la tercera casilla está el mismo símbolo
+   396	    jne upper_diagonal_check; Salta a revisar la diagonal hacia arriba si no son iguales
+   397	
+   398	    ; Si llega acá, hay una línea diagonal de 3 Os o Xs
+   399	    mov EAX, 1
+   400	    ret
+   401	
+   402	upper_diagonal_check:
+   403	    cmp dword [ESI+24], EDI ; Verifica si en la primera casilla está el mismo símbolo
+   404	    jne no_three_in_a_row   ; Salta a la siguiente columna si no son iguales
+   405	    
+   406	    cmp dword [ESI+16], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   407	    jne no_three_in_a_row   ; Salta a la siguiente columna si no son iguales
+   408	    
+   409	    cmp dword [ESI+8], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   410	    jne no_three_in_a_row   ; Salta a la siguiente columna si no son iguales
+   411	
+   412	    ; Si llega acá, hay una línea diagonal de 3 Os o Xs
+   413	    mov EAX, 1
+   414	    ret
+   415	
+   416	no_three_in_a_row:
+   417	    xor EAX, EAX            ; Retorna 0
+   418	    ret
+   419	
+   420	
+   421	;---------------------------------------------------------------- check_board_tie
+   422	; Pasándole el número del tablero, chequéa si se llenó el tablero y nadie lo ganó
+   423	; También completa una casilla en el tablero principa si hubo un empate con un 3
+   424	; Entrada: número del tablero en la pila
+   425	; Salida: void (Solo debe colocar un 3 en el tablero principal)
+   426	;----------------------------------------------------------------
+   427	check_board_tie:
+   428	    enter 0,0
+   429	
+   430	    mov EDX, [EBP+8]        ; Obtengo el numero de la pila
+   431	    imul EDX, 4             ; Lo multiplico para contar por el tamaño de cada espacio
+   432	
+   433	    mov EAX, board_matrix   ; Cargo la dirección base del board_matrix
+   434	    add EAX, EDX            ; Le sumo la cantidad del EDX para llegar al tablero correcto
+   435	    mov EAX, [EAX]          ; Cargo el tablero correcto para revisarlo en board_check
+   436	
+   437	    mov ECX, 9              ; Son 9 espacios que chequear en un tablero
+   438	
+   439	board_tie_loop:
+   440	    ; Si una casilla tiene un 0, entonces no hay empate
+   441	    cmp dword[EAX], 0
+   442	    je no_tie
+   443	
+   444	    add EAX, 4              ; Sigo con la siguiente casilla
+   445	    dec ECX                 ; Reducir el contador
+   446	    jnz board_tie_loop      ; Itera hasta haber recorrido las 9 casillas
+   447	
+   448	    ; Si llega acá, hay un empate y no se pueden colocar más casillas en este subtablero
+   449	    add EDX, main_board     ; Le sumo al EDX la dirección base del tablero principal
+   450	    mov dword[EDX], 3       ; Guardo en ese tablero el valor de empate
+   451	
+   452	    ;Verifico que no se me vaya a bloquear el juego si hay un empate
+   453	    mov ECX, [EBP + 8]
+   454	    push ECX
+   455	    call set_current_board  ; Llamo a esta función para verificar que no se bloquee el juego
+   456	
+   457	    leave 
+   458	    ret
+   459	
+   460	
+   461	check_empty_board:
+   462	    enter 0,0
+   463	
+   464	    mov EAX, board_matrix   ; Cargo la dirección base del board_matrix
+   465	    mov ECX, 80         ;Cantidad de casillas -1 por base.
+   466	    loop empty_board_loop
+   467	
+   468	    mov EAX, 1
+   469	    leave
+   470	    ret
+   471	
+   472	empty_board_loop:
+   473	    add EAX, 4              ; Sigo con la siguiente casilla
+   474	    ; Si una casilla tiene un 0, entonces hay una casilla vacía
+   475	    cmp dword[EAX], 1
+   476	    je auto_return_not_empty
+   477	    cmp dword[EAX], 2
+   478	    je auto_return_not_empty
+   479	
+   480	    dec ECX
+   481	    jnz empty_board_loop
+   482	
+   483	auto_return_not_empty:
+   484	    mov EAX, 0
+   485	    leave
+   486	    ret
+   487	
+   488	no_tie:
+   489	    leave
+   490	    ret
+   491	
+   492	
+   493	bot_move:
+   494	    enter 0,0
+   495	    pushad
+   496	    mov dword [fake_turn], 1 ;Establecer el rival.
+   497	    mov EDX, [current_board]        ; Obtengo el numero de la pila
+   498	    cmp EDX, -1
+   499	    je handle_freedom
+   500	keep_going:
+   501	    mov EDX, [current_board]
+   502	    imul EDX, 4             ; Lo multiplico para contar por el tamaño de cada espacio
+   503	
+   504	    mov ESI, board_matrix   ; Cargo la dirección base del board_matrix
+   505	    add ESI, EDX            ; Le sumo la cantidad del EDX para llegar al tablero correcto
+   506	    mov ESI, [ESI]          ; Cargo el tablero correcto para buscar por una posible victoria para el bot
+   507	
+   508	    jmp check_bot_victory        ; Revisa si en ese tablero podria haber una victoria
+   509	
+   510	handle_freedom:
+   511	    mov eax, main_board
+   512	    cmp dword [eax], 0
+   513	    je case1
+   514	    cmp dword [eax+4], 0
+   515	    je case2
+   516	    cmp dword [eax+8], 0
+   517	    je case3
+   518	    cmp dword [eax+12], 0
+   519	    je case4
+   520	    cmp dword [eax+16], 0
+   521	    je case5
+   522	    cmp dword [eax+20], 0
+   523	    je case6
+   524	    cmp dword [eax+24], 0
+   525	    je case7
+   526	    cmp dword [eax+28], 0
+   527	    je case8
+   528	    cmp dword [eax+32], 0
+   529	    je case9
+   530	
+   531	case1: 
+   532	    mov dword [current_board], 0
+   533	    jmp keep_going
+   534	
+   535	case2: 
+   536	    mov dword [current_board], 1
+   537	    jmp keep_going
+   538	
+   539	case3: 
+   540	    mov dword [current_board], 2
+   541	    jmp keep_going
+   542	
+   543	case4: 
+   544	    mov dword [current_board], 3
+   545	    jmp keep_going
+   546	
+   547	case5:
+   548	    mov dword [current_board], 4
+   549	    jmp keep_going
+   550	
+   551	case6:
+   552	    mov dword [current_board], 5
+   553	    jmp keep_going
+   554	
+   555	case7:
+   556	    mov dword [current_board], 6
+   557	    jmp keep_going
+   558	
+   559	case8:
+   560	    mov dword [current_board], 7
+   561	    jmp keep_going
+   562	
+   563	case9:
+   564	    mov dword [current_board], 8
+   565	    jmp keep_going
+   566	
+   567	check_bot_victory:
+   568	
+   569	    mov EDI, 2 ;Carga el turno 2
+   570	
+   571	    ; Revisar las filas (horizontalmente)
+   572	    mov EAX, 3              ; Es la cantidad de veces de revisiones horizontales
+   573	    mov EBX, ESI            ; Copia la dirección del tablero porque este se va a manipular
+   574	
+   575	    jmp horizontal_bot_check
+   576	
+   577	    
+   578	horizontal_bot_check:
+   579	    MOV ECX, 0
+   580	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   581	    je increase_counter_hor    ; Salta a la siguiente fila si no son iguales
+   582	
+   583	horizontal_bot_check1:
+   584	    mov EDX, [fake_turn]
+   585	    cmp dword [EBX], EDX
+   586	    je decrease_counter_hor
+   587	    jne aftercheck1hor
+   588	
+   589	decrease_counter_hor:
+   590	    dec ECX
+   591	    jnz aftercheck1hor
+   592	    
+   593	aftercheck1hor:
+   594	    cmp dword [EBX+4], EDI  ; Verifica si en la segunda casilla está el mismo símbolo
+   595	    je increase_counter_hor1     ; Salta a la siguiente fila si no son iguales
+   596	
+   597	horizontal_bot_check2:
+   598	    mov EDX, [fake_turn]
+   599	    cmp dword [EBX+4], EDX
+   600	    je decrease_counter_hor1
+   601	    jne aftercheck2hor
+   602	
+   603	decrease_counter_hor1:
+   604	    dec ECX
+   605	    jnz aftercheck2hor
+   606	aftercheck2hor:
+   607	    cmp dword [EBX+8], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   608	    je increase_counter_hor2   ; Salta a la siguiente fila si no son iguales
+   609	
+   610	continue_hor:
+   611	    mov EDX, [fake_turn]
+   612	    cmp dword [EBX+8], EDX
+   613	    je decrease_counter_hor3
+   614	    jne continue_hor2
+   615	
+   616	decrease_counter_hor3:
+   617	    dec ECX
+   618	    jmp continue_hor2
+   619	
+   620	continue_hor2:
+   621	    cmp ECX, 2
+   622	    je locate_horizontal
+   623	    jne horizontal_jump_bot
+   624	
+   625	locate_horizontal:
+   626	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   627	    jne slot1place    
+   628	
+   629	    cmp dword [EBX+4], EDI  ; Verifica si en la segunda casilla está el mismo símbolo
+   630	    jne slot2place    
+   631	
+   632	    cmp dword [EBX+8], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   633	    jne slot3place   
+   634	
+   635	slot1place: 
+   636	    popad
+   637	    mov EAX, [EBP+8]
+   638	    MOV EDX, [EBP+12]
+   639	    mov ECX, 0
+   640	    mov [eax], ecx
+   641	    mov [edx], ecx
+   642	    mov EAX, [EBP+16]
+   643	    mov ECX, [current_board]
+   644	    mov [eax], ecx
+   645	    leave
+   646	    ret 12
+   647	
+   648	slot2place:
+   649	    popad
+   650	    mov EAX, [EBP+8]
+   651	    MOV EDX, [EBP+12]
+   652	    mov ECX, 0
+   653	    mov [eax], ecx
+   654	    mov ecx, 1
+   655	    mov [edx], ecx
+   656	    mov EAX, [EBP+16]
+   657	    mov ECX, [current_board]
+   658	    mov [eax], ecx
+   659	    leave
+   660	    ret 12
+   661	
+   662	slot3place:
+   663	    popad
+   664	    mov EAX, [EBP+8]
+   665	    MOV EDX, [EBP+12]
+   666	    mov ECX, 0
+   667	    mov [eax], ecx
+   668	    mov ecx, 2
+   669	    mov [edx], ecx
+   670	    mov EAX, [EBP+16]
+   671	    mov ECX, [current_board]
+   672	    mov [eax], ecx
+   673	    leave
+   674	    ret 12
+   675	
+   676	horizontal_jump_bot:
+   677	    add EBX, 12             ; Salta a la siguiente fila a evaluar
+   678	    mov ECX, 0              ;Actualizar contador de posibilidad
+   679	    dec EAX                 ; Decrementa el contador
+   680	    jnz horizontal_bot_check   ; Repetir hasta recorrer las 3 filas
+   681	
+   682	    ; Revisar las columnas (verticalmente)
+   683	    mov EAX, 3              ; Es la cantidad de veces de revisiones verticales
+   684	    mov EBX, ESI            ; Copia la dirección del tablero porque este se va a manipular
+   685	
+   686	vertical_bot_check:
+   687	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   688	    je increase_counter_ver       ; Salta a retornar false porque no hay ninguna línea de 3
+   689	
+   690	vertical_bot_check1:    
+   691	    mov EDX, [fake_turn]
+   692	    cmp dword [EBX], EDX
+   693	    je decrease_counter_ver1
+   694	    jne aftercheck1ver
+   695	
+   696	decrease_counter_ver1:
+   697	    dec ECX
+   698	    je aftercheck1ver
+   699	aftercheck1ver:
+   700	    cmp dword [EBX+12], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   701	    je increase_counter_ver1       ; Salta a retornar false porque no hay ninguna línea de 3
+   702	vertical_bot_check2:    
+   703	    mov EDX, [fake_turn]
+   704	    cmp dword [EBX+12], EDX
+   705	    je decrease_counter_ver2
+   706	
+   707	    jne aftercheck2ver
+   708	
+   709	decrease_counter_ver2:
+   710	    dec ECX
+   711	    jnz aftercheck2ver
+   712	aftercheck2ver:
+   713	    cmp dword [EBX+24], EDI ; Verifica si en la tercera casilla está el mismo símbolo
+   714	    je increase_counter_ver2       ; Salta a retornar false porque no hay ninguna línea de 3
+   715	continue_ver:
+   716	    mov EDX, [fake_turn]
+   717	    cmp dword [EBX+24], EDX
+   718	    je decrease_counter_ver3
+   719	    jne continue_ver2
+   720	
+   721	decrease_counter_ver3:
+   722	    dec ECX
+   723	    jmp continue_ver2
+   724	
+   725	
+   726	continue_ver2:
+   727	    cmp ECX, 2
+   728	    je locate_vertical
+   729	    jne vertical_jump_bot
+   730	
+   731	locate_vertical:
+   732	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   733	    jne slot1place    
+   734	
+   735	    cmp dword [EBX+12], EDI  ; Verifica si en la segunda casilla está el mismo símbolo
+   736	    jne slot4place    
+   737	
+   738	    cmp dword [EBX+24], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   739	    jne slot7place   
+   740	
+   741	slot4place:
+   742	    popad
+   743	    mov EAX, [EBP+8]
+   744	    MOV EDX, [EBP+12]
+   745	    mov ECX, 1
+   746	    mov [eax], ecx
+   747	    mov ecx, 0
+   748	    mov [edx], ecx
+   749	    mov EAX, [EBP+16]
+   750	    mov ECX, [current_board]
+   751	    mov [eax], ecx
+   752	    leave
+   753	    ret 12
+   754	
+   755	slot7place:
+   756	    popad
+   757	    mov EAX, [EBP+8]
+   758	    MOV EDX, [EBP+12]
+   759	    mov ECX, 2
+   760	    mov [eax], ecx
+   761	    mov ecx, 0
+   762	    mov [edx], ecx
+   763	    mov EAX, [EBP+16]
+   764	    mov ECX, [current_board]
+   765	    mov [eax], ecx
+   766	    leave
+   767	    ret 12
+   768	
+   769	vertical_jump_bot:
+   770	    add EBX, 4              ; Salta a la siguiente columna a evaluar
+   771	    mov ECX, 0              ;Actualizar contador de posibilidad
+   772	    dec EAX                 ; Decrementa el contador
+   773	    jnz vertical_bot_check      ; Repetir hasta recorrer las 3 columnas
+   774	
+   775	    jmp down_diagonal_check_bot; Revisar en diagonal hacia arriba
+   776	
+   777	
+   778	down_diagonal_check_bot:
+   779	    cmp dword [ESI], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   780	    je increase_counter_diagbot; Salta a revisar la diagonal hacia arriba si no son iguales
+   781	down_diagonal_check_bot1:    
+   782	    mov EDX, [fake_turn]
+   783	    cmp dword [ESI], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   784	    je decrease_counter_diagbot1
+   785	
+   786	    jne aftercheck1diagbot
+   787	
+   788	decrease_counter_diagbot1:
+   789	    dec ECX
+   790	    jnz aftercheck1diagbot
+   791	aftercheck1diagbot:
+   792	    cmp dword [ESI+16], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   793	    je increase_counter_diagbot1; Salta a revisar la diagonal hacia arriba si no son iguales
+   794	
+   795	down_diagonal_check_bot2: 
+   796	    mov EDX, [fake_turn]  
+   797	    cmp dword [ESI+16], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   798	    je decrease_counter_diagbot2
+   799	
+   800	    jne aftercheck2diagbot
+   801	
+   802	decrease_counter_diagbot2:
+   803	    dec ECX
+   804	    jmp aftercheck2diagbot
+   805	
+   806	aftercheck2diagbot:
+   807	    cmp dword [ESI+32], EDI ; Verifica si en la tercera casilla está el mismo símbolo
+   808	    je increase_counter_diagbot2; Salta a revisar la diagonal hacia arriba si no son iguales
+   809	
+   810	continue_diagbot:
+   811	    mov EDX, [fake_turn]
+   812	    cmp dword [ESI+32], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   813	    je decrease_counter_diagbot3
+   814	    jne continue_diagbot2
+   815	
+   816	decrease_counter_diagbot3:
+   817	    dec ECX
+   818	    jmp continue_diagbot2
+   819	
+   820	continue_diagbot2:
+   821	    cmp ECX, 2
+   822	    je locate_down_diagonal
+   823	    mov ECX, 0 
+   824	    jne upper_diagonal_check_bot
+   825	
+   826	locate_down_diagonal:
+   827	    cmp dword [EBX], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   828	    jne slot1place    
+   829	
+   830	    cmp dword [EBX+16], EDI  ; Verifica si en la segunda casilla está el mismo símbolo
+   831	    jne slot5place    
+   832	
+   833	    cmp dword [EBX+32], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   834	    jne slot9place   
+   835	
+   836	slot5place:
+   837	    popad
+   838	    mov EAX, [EBP+8]
+   839	    MOV EDX, [EBP+12]
+   840	    mov ECX, 1
+   841	    mov [eax], ecx
+   842	    mov ecx, 1
+   843	    mov [edx], ecx
+   844	    mov EAX, [EBP+16]
+   845	    mov ECX, [current_board]
+   846	    mov [eax], ecx
+   847	    leave
+   848	    ret 12
+   849	
+   850	slot9place:
+   851	    popad
+   852	    mov EAX, [EBP+8]
+   853	    MOV EDX, [EBP+12]
+   854	    mov ECX, 2
+   855	    mov [eax], ecx
+   856	    mov ecx, 2
+   857	    mov [edx], ecx
+   858	    mov EAX, [EBP+16]
+   859	    mov ECX, [current_board]
+   860	    mov [eax], ecx
+   861	    leave
+   862	    ret 12
+   863	
+   864	upper_diagonal_check_bot:
+   865	    cmp dword [ESI+24], EDI ; Verifica si en la primera casilla está el mismo símbolo
+   866	    je increase_counter_diagtop  ; Salta a la siguiente columna si no son iguales
+   867	upper_diagonal_check_bot1:    
+   868	    mov EDX, fake_turn
+   869	    cmp dword [ESI+24], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   870	    je decrease_counter_diagtop1
+   871	    jne aftercheck1diagtop
+   872	
+   873	decrease_counter_diagtop1:
+   874	    dec ECX
+   875	    jnz aftercheck1diagtop
+   876	aftercheck1diagtop:
+   877	    cmp dword [ESI+16], EDI ; Verifica si en la segunda casilla está el mismo símbolo
+   878	    je increase_counter_diagtop1   ; Salta a la siguiente columna si no son iguales
+   879	
+   880	upper_diagonal_check_bot2:   
+   881	    mov EDX, fake_turn     
+   882	    cmp dword [ESI+16], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   883	    je decrease_counter_diagtop2
+   884	
+   885	    jne aftercheck2diagtop
+   886	decrease_counter_diagtop2:
+   887	    dec ECX
+   888	    jmp aftercheck2diagtop
+   889	
+   890	aftercheck2diagtop:
+   891	    cmp dword [ESI+8], EDI  ; Verifica si en la tercera casilla está el mismo símbolo
+   892	    je increase_counter_diagtop2   ; Salta a la siguiente columna si no son iguales
+   893	continue_diagtop:
+   894	    mov EDX, fake_turn
+   895	    cmp dword [ESI+8], EDX ; Verifica si en la primera casilla está el mismo símbolo
+   896	    je decrease_counter_diagtop3
+   897	    jne continue_diagtop2
+   898	
+   899	decrease_counter_diagtop3:
+   900	    dec ECX
+   901	    jmp continue_diagtop2
+   902	
+   903	continue_diagtop2:
+   904	    cmp ECX, 2
+   905	    je locate_top_diagonal
+   906	
+   907	    cmp EDI, 2
+   908	    je stop_player
+   909	    jne random_placement
+   910	
+   911	locate_top_diagonal:
+   912	    cmp dword [ESI+24], EDI    ; Verifica si en la primera casilla está el mismo símbolo
+   913	    jne slot7place
+   914	    cmp dword [ESI+16], EDI
+   915	    jne slot5place
+   916	    cmp dword [ESI+8], EDI   ; Verifica si en la tercera casilla está el mismo símbolo
+   917	    jne slot3place
+   918	
+   919	increase_counter_diagtop:
+   920	    inc ECX
+   921	    jmp upper_diagonal_check_bot1
+   922	increase_counter_diagtop1:
+   923	    inc ECX
+   924	    jmp upper_diagonal_check_bot2
+   925	increase_counter_diagtop2:
+   926	    inc ECX
+   927	    jmp continue_diagtop
+   928	increase_counter_diagbot:
+   929	    inc ECX
+   930	    jmp down_diagonal_check_bot1
+   931	increase_counter_diagbot1:
+   932	    inc ECX
+   933	    jmp down_diagonal_check_bot2
+   934	increase_counter_diagbot2:
+   935	    inc ECX
+   936	    jmp continue_diagbot
+   937	increase_counter_hor:
+   938	    inc ECX
+   939	    jmp horizontal_bot_check1
+   940	increase_counter_hor1:
+   941	    inc ECX
+   942	    jmp horizontal_bot_check2
+   943	increase_counter_hor2:
+   944	    inc ECX
+   945	    jmp continue_hor
+   946	
+   947	increase_counter_ver:
+   948	    inc ECX
+   949	    jmp vertical_bot_check1
+   950	increase_counter_ver1:
+   951	    inc ECX
+   952	    jmp vertical_bot_check2
+   953	increase_counter_ver2:
+   954	    inc ECX
+   955	    jmp continue_ver
+   956	
+   957	stop_player:
+   958	
+   959	    mov dword [fake_turn], 2 ;establecer bot
+   960	    mov EDX, [current_board]
+   961	    imul EDX, 4             ; Lo multiplico para contar por el tamaño de cada espacio
+   962	
+   963	    mov ESI, board_matrix   ; Cargo la dirección base del board_matrix
+   964	    add ESI, EDX            ; Le sumo la cantidad del EDX para llegar al tablero correcto
+   965	    mov ESI, [ESI]          ; Cargo el tablero correcto para buscar por una posible victoria para el bot
+   966	    mov EDI, 1 ;Carga el turno del player
+   967	
+   968	    mov EAX, 3              ; Es la cantidad de veces de revisiones horizontales
+   969	    mov EBX, ESI            ; Copia la dirección del tablero porque este se va a manipular
+   970	
+   971	    jmp horizontal_bot_check
+   972	
+   973	random_placement:
+   974	    cmp dword[ESI], 0
+   975	    je slot1place
+   976	    cmp dword[ESI+4], 0
+   977	    je slot2place
+   978	    cmp dword[ESI+8], 0
+   979	    je slot3place
+   980	    cmp dword[ESI+12], 0
+   981	    je slot4place
+   982	    cmp dword[ESI+16], 0
+   983	    je slot5place
+   984	    cmp dword[ESI+20], 0
+   985	    je slot6place
+   986	    cmp dword[ESI+24], 0
+   987	    je slot7place
+   988	    cmp dword[ESI+28], 0
+   989	    je slot8place
+   990	    cmp dword[ESI+32], 0
+   991	    je slot9place
+   992	
+   993	    mov EAX, [current_board]
+   994	    inc EAX
+   995	    mov [current_board], EAX
+   996	    jmp bot_move
+   997	
+   998	slot6place:
+   999	    popad
+  1000	    mov EAX, [EBP+8]
+  1001	    MOV EDX, [EBP+12]
+  1002	    mov ECX, 1
+  1003	    mov [eax], ecx
+  1004	    mov ecx, 2
+  1005	    mov [edx], ecx
+  1006	    mov EAX, [EBP+16]
+  1007	    mov ECX, [current_board]
+  1008	    mov [eax], ecx
+  1009	    leave
+  1010	    ret 12
+  1011	
+  1012	slot8place: 
+  1013	    popad
+  1014	    mov EAX, [EBP+8]
+  1015	    MOV EDX, [EBP+12]
+  1016	    mov ECX, 2
+  1017	    mov [eax], ecx
+  1018	    mov ecx, 1
+  1019	    mov [edx], ecx
+  1020	    mov EAX, [EBP+16]
+  1021	    mov ECX, [current_board]
+  1022	    mov [eax], ecx
+  1023	    leave
+  1024	    ret 12
+  1025	
+  1026	get_current_board:
+  1027	    enter 0,0
+  1028	    mov EDX, [EBP+8]
+  1029	    mov EAX, [current_board]
+  1030	    MOV [EDX], EAX
+  1031	    leave
+  1032	    ret 4

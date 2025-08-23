@@ -1,0 +1,78 @@
+bien y mal ----- ed 2
+
+Hay una lista doblemente enlazada de 10000 (minimo) personas, con los siguientes datos. Se debe poder generar cualquier N cantidad de personas en un dado momento
+ID : Dato aleatorio de 0 a 999999
+ --
+Nombre
+Apellido
+Pais
+Creencia
+Profesion
+ -- /Los datos anteriores vienen de un archivo con: 1000 nombres, 1000 apellidos, 100 paises, 20 religiones. Al generar humanos se pregunta cuantos se usara
+
+Fecha y Hora de nacimiento / se genera con la hora de creacion
+
+Lista de pecados
+ -- Este es un array, de orden [lujuria, gula, avaricia, pereza, ira, envidia, soberbia]
+ -- Una persona tendria algo como [0,2,1,5,6,7], donde el numero es la cantidad de veces que ha hecho ese pecado
+ -- Se colocan pecados con un algoritmo aleatorio, con 0 a 100 pecados a cada tipo de humano.
+Lista de amigos
+ --Una lista o arreglo. Comparten afinidad en pais, apellido y religion con el humano
+ -- No pueden ser mas de 10
+ -- Se podrian generar los amigos cuando se generen los humanos por facilidad
+Reencarnaciones
+Satus
+
+----------------
+El mundo es una estructura de arbol binario.
+Es de busqueda ABB: subarboles izquierdos menores, derechos mayores
+Completo en todos los niveles hasta el mas bajo
+Cada hoja del arbol tiene un puntero a una lista de humanos
+Por ende, para buscar un humano, se baja a la lista correspondiente para iterar la lista
+Se debe poder imprimir la cantidad de niveles del arbol, cantidad de nodos, cantidad de humanos, e imprimir la informacion de los humanos del ultimo nivel del arbol.
+-----------------
+Muerte:
+La muerte puede realizar varios algoritmos:
+HEAP: forma un maxheap de los humanos mas pecadores por cierto pecado, o su sumatoria. Se imprime como arbol para que se selecciona la cantidad de niveles del heap
+ALEATORIO: una pandemia con una probabilidad indicada mata a gente, que provoca que se mueran los humanos con ese chanse. Cada pandemia tiene un numero consecutivo
+ESPECIFICO: se da un ID y si existe y esta vivo, esa persona muere.
+
+////
+
+Bitacora de la muerte
+Cuando algien muere, quedan en un txt 
+Su info se dibide por tabuladores
+Importa: Numero de Muerte - Hora y Fecha - Tipo de algoritmo - TODA LA INFO del humano
+Tambien por cada ejecucion de un algoritmo de muerte se manda un email a la muerte (XD?) con la lista de los muertos en esa ejecucion, otro txt separado por tabs
+Evidentemente es consultable la bitacora
+
+-----------------
+Reencarnacion:
+Dios (yo) genera un nivel completo en su arbol 3-ario de angeles. A cada uno se le asigna un id y salvara un humano de la muerte.
+Para esto, selecciona alguno de la bitacora de la muerte, lo borra de la misma, y lo reencarna con data nueva. Este solo tendra la mtiad de los pecados previos. 
+Se debe guardar su historial de reencarnaciones, la actual, y la cantidad de las mismas, ademas de un puntero al angel que lo salvo, y el arbol debe tener el humano que el angel salvo.
+
+El arbol se vera algo asi: nivel 0 Dios
+nivel 1: Serafines, Querumbines, Tronos
+nivel 2+: se genera un nivel mas con toda la informacion relevante. Osea que crecera por 1 cada vez que se ejecute
+Solo los angeles nuevos pueden salvar humanos condenados
+Cada angel tiene la info: Nombre 
+Los angeles se pueden llamar Miguel, Nuriel, Aniel, Rafael, Gabriel, Shamsiel, Raguel, Uriel, Azrael, Sariel.
+Version: El numero de ese angel en esa generacion (Miguel(1), Rafael(1), Miguel(2)...)
+Generacion: Nivel del arbol
+Humano: Puntero al humano que fue salvado por el angel.
+
+///////
+Archivos de salvacion (XDD)
+Se genera un log en archivos txt separados por tabuladores (Salvados_20190501_142900.txt) para cada corrida de salvacion
+Tendra todo lo que sucedio con cada humano salvado
+Se verua cini Fecha Hora 	Numero de serie	Datos de humano
+Este se envia al correo de los angeles (XDDDD)
+
+////////
+Consultas
+Se debe poder consultar por humanidad, no hace falta mostrar todas las reincarnaciones, pero si la cantidad
+Buscar un humano por ID: toda la info sobre el humano, y la lista de amigos con su info principal
+Ranking por pais de mas pecadores 
+Impresion del arbol 3ario de angeles, cada nodo indica el angel y el id que salvo y el numero de reincarnaciones del id
+Lista de humanos con N reencarnaciones con toda la info

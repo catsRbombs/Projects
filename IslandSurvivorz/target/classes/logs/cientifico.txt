@@ -1,0 +1,84 @@
+Día 1
+Intento de crear Medicina
+El personaje intento consumir: Medicina
+El personaje Cientifico se mueve a (483, 252)
+El personaje Cientifico se mueve a (483, 252)
+El personaje Cientifico se mueve a (483, 252)
+Día 2
+Nivel de hambre: 1
+Despejado
+Día 3
+Nivel de hambre: 2
+Despejado
+Día 4
+Nivel de hambre: 3
+Despejado
+Día 5
+Nivel de hambre: 4
+Despejado
+Día 6
+Nivel de hambre: 5
+Despejado
+Día 7
+Nivel de hambre: 6
+Despejado
+Apareció una Tormenta leve
+Día 8
+Pasó la noche afuera de un refugio en tormenta
+Nivel de hambre: 7
+Tormenta leve
+Día 9
+Pasó la noche afuera de un refugio en tormenta
+Nivel de hambre: 8
+Despejado
+Día 10
+Nivel de hambre: 9
+Despejado
+Día 11
+Nivel de hambre: 10
+Despejado
+Día 12
+Nivel de hambre: 11
+Despejado
+Día 13
+Nivel de hambre: 12
+Despejado
+Día 14
+Nivel de hambre: 13
+Despejado
+Día 15
+Nivel de hambre: 14
+Despejado
+Día 16
+Nivel de hambre: 15
+Despejado
+Día 17
+Nivel de hambre: 16
+Despejado
+Día 18
+Nivel de hambre: 17
+Despejado
+Día 19
+Nivel de hambre: 18
+Despejado
+Día 20
+Nivel de hambre: 19
+Despejado
+Día 21
+Nivel de hambre: 20
+Despejado
+Día 22
+Nivel de hambre: 21
+Despejado
+Día 23
+Nivel de hambre: 22
+Despejado
+Día 24
+Nivel de hambre: 23
+Despejado
+Día 25
+Nivel de hambre: 24
+Despejado
+Día 26
+Nivel de hambre: 25
+Despejado

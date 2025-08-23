@@ -1,0 +1,100 @@
+Abogado  
+Medico  
+Ingeniero  
+Arquitecto  
+Profesor  
+Enfermero  
+Carpintero  
+Electricista  
+Fontanero  
+Disenador grafico  
+Programador  
+Contador  
+Abogado  
+Psicologo  
+Farmaceutico  
+Chef  
+Investigador  
+Piloto  
+Periodista  
+Mecanico  
+Vendedor  
+Fotografo  
+Artista  
+Biologo  
+Quimico  
+Historiador  
+Matematico  
+Sociologo  
+Trabajador social  
+Traductor  
+Interprete  
+Analista de datos  
+Gerente de marketing  
+Consultor  
+Economista  
+Asistente administrativo  
+Director de recursos humanos  
+Administrador de sistemas  
+Desarrollador web  
+Gestor de proyectos  
+Cientifico  
+Investigador medico  
+Piloto de avion  
+Optometrista  
+Veterinario  
+Tecnico de laboratorio  
+Archivista  
+Paramedico  
+Terapeuta ocupacional  
+Asistente de vuelo  
+Operador de maquinaria  
+Ingeniero civil  
+Ingeniero mecanico  
+Ingeniero de software  
+Productor de cine  
+Director de fotografia  
+Especialista en seguridad informatica  
+Investigador de mercado  
+Publicista  
+Decorador de interiores  
+Especialista en relaciones publicas  
+Analista financiero  
+Tecnico en emergencias medicas  
+Chef de pasteleria  
+Estilista  
+Peluquero  
+Gardener (Jardinero)  
+Trabajador de la construccion  
+Investigador criminal  
+Agente de seguros  
+Asistente de marketing  
+Administrador de base de datos  
+Operador de call center  
+Ejecutivo de ventas  
+Maquinista  
+Conductor  
+Guardabosques  
+Entrenador personal  
+Coordinador de eventos  
+Auxiliar de vuelo  
+Planificador financiero  
+Asesor educativo  
+Consultor ambiental  
+Agente de viajes  
+Inspector de construccion  
+Director de ventas  
+Actuario  
+Especialista en e-commerce  
+Coach de vida  
+Encargado de logistica  
+Experto en desarrollo de negocios  
+Tecnico en informatica  
+Disenador de moda  
+Editor de video  
+Autor  
+Juez  
+Conservador de museo  
+Animador  
+Especialista en redes sociales  
+Consejero escolar  
