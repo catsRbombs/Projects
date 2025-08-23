@@ -1,0 +1,3 @@
+Es posible que se tenga que abrir el programa dos veces por propositos de
+la instalacion de los archivos relevantes a este. Es importante abrir este programa
+desde este folder para que lea bien sus documentos respectivos.

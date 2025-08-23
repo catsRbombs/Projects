@@ -1,0 +1,31 @@
+Gameloz
+Espiritualidad
+Toque_espiritual:32,40,25,20,32,23,20,26,21,38
+Refugio_mistico:34,30,21,37,27,23,20,32,27,29
+Explosion_astral:39,33,34,26,20,34,22,40,26,22
+Camino_etereo:28,21,24,36,31,39,32,37,28,35
+Resonancia_divina:38,22,33,38,39,27,28,40,34,31
+Agua
+Oleaje:38,31,20,22,21,36,22,22,26,29
+Prision_de_agua:29,35,20,31,39,26,29,34,39,33
+Bendicion_de_la_marea:38,36,20,23,39,39,37,30,29,31
+Ebullicion:39,38,34,28,20,36,39,30,34,40
+Maremoto:36,39,20,29,37,20,32,20,28,36
+Aire
+Empuje_de_viento:21,30,27,32,39,36,21,22,25,31
+Ventisca:38,22,28,25,28,39,26,30,34,38
+Ojo_de_la_tormenta:22,33,28,37,37,29,27,20,36,22
+Monzon:37,32,39,39,35,40,30,26,31,21
+Zefiro:25,38,37,32,39,24,28,40,29,29
+Hielo
+Rocio_helado:20,26,23,29,37,28,29,37,35,27
+Lanza_de_hielo:28,38,21,35,23,33,22,31,28,20
+Muro_glaciar:24,20,30,32,40,29,32,35,20,24
+Ventisca:40,26,31,35,33,30,35,29,39,24
+Tormenta_helada:35,34,33,38,35,38,29,36,33,36
+Wins: 0
+Loses: 1
+Attacks: 1
+Success: 1
+Failed: 0
+Giveup: 1

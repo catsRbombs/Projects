@@ -1,0 +1,31 @@
+Rafa
+Agua
+Oleaje:27,20,39,23,35,26,25,25,28,28
+Prision_de_agua:22,33,35,37,39,32,21,30,39,38
+Bendicion_de_la_marea:30,34,22,38,35,29,21,31,24,36
+Ebullicion:22,31,31,34,29,30,29,26,20,21
+Maremoto:23,22,39,28,28,39,31,29,40,33
+Aire
+Empuje_de_viento:20,37,36,38,26,21,31,26,31,40
+Ventisca:21,35,25,23,20,20,37,33,25,35
+Ojo_de_la_tormenta:33,22,35,21,39,24,25,37,32,39
+Monzon:35,20,28,25,24,25,26,33,33,34
+Zefiro:25,29,30,36,36,40,36,34,29,28
+Hielo
+Rocio_helado:24,28,33,26,21,37,23,24,35,32
+Lanza_de_hielo:20,26,37,39,33,28,33,29,22,33
+Muro_glaciar:23,33,37,39,39,21,32,32,37,37
+Ventisca:26,32,39,38,26,26,26,31,35,27
+Tormenta_helada:34,37,31,23,25,36,35,30,39,32
+Espiritualidad
+Toque_espiritual:34,38,37,23,37,39,21,40,28,34
+Refugio_mistico:21,22,34,24,27,35,38,25,38,36
+Explosion_astral:25,20,36,33,32,39,27,20,34,27
+Camino_etereo:29,24,27,39,33,32,30,38,35,28
+Resonancia_divina:27,40,21,33,25,33,39,34,33,27
+Wins: 1
+Loses: 0
+Attacks: 2
+Success: 2
+Failed: 0
+Giveup: 0

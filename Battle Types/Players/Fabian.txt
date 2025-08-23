@@ -1,0 +1,63 @@
+Fabian
+Fuego
+Flama_abrasadora:33,31,34,36,24,30,35,24,22,32
+Quemadura:27,21,22,33,23,25,21,20,30,25
+Pilar_de_fuego:32,36,35,24,29,25,28,32,34,28
+Conflagracion:33,38,20,35,22,22,23,32,31,25
+Tormenta_ignea:33,36,39,26,20,39,30,20,29,38
+Agua
+Oleaje:29,35,27,33,26,37,27,31,34,27
+Prision_de_agua:23,37,23,31,38,35,38,34,28,22
+Bendicion_de_la_marea:28,33,25,27,22,22,25,35,34,25
+Ebullicion:24,20,33,30,34,34,35,35,33,31
+Maremoto:24,37,22,32,23,27,30,30,24,30
+Magia_Blanca
+Iluminacion:27,23,29,29,39,22,33,27,34,25
+Prision_de_luz:32,36,39,35,26,36,26,26,27,28
+Barrera_prismatica:23,29,33,30,23,37,39,32,20,26
+Singularidad brillante:23,24,28,32,35,21,34,31,21,40
+Chispa_final:40,23,23,27,37,21,31,25,40,38
+Magia_Oscura
+<<<<<<< Updated upstream
+Transcendencia_oscura:33,24,21,31,22,24,24,24,40,29
+Esfera_oscura:30,23,30,29,23,26,40,27,25,22
+Voluntad_imperial:27,32,33,29,35,33,37,22,38,34
+Dispersion_de_los_debiles:24,37,38,32,20,39,37,34,23,32
+Desencadenar_poder:35,31,40,38,24,23,33,31,35,25
+Wins: 0
+Loses: 1
+Attacks: 2
+Success: 2
+Failed: 0
+Giveup: 1
+=======
+Transcendencia_Oscura:55,24,85,63,61,45,80,31,29,53
+Esfera_Oscura:66,94,51,76,29,39,69,39,31,78
+Voluntad_Imperial:87,50,91,79,99,30,83,80,80,48
+Dispersion_De_Los_Debiles:92,69,43,23,64,59,48,90,92,33
+Desencadenar_Poder:77,30,47,96,36,51,37,38,34,74
+Hierro
+Rompe_Moldes:26,21,66,91,57,28,65,94,91,55
+Golpe_Aplastante:47,95,71,57,46,85,69,87,36,46
+Ferromancia:61,41,83,40,73,22,94,56,95,87
+Atraccion_Magnetica:83,96,57,36,65,90,62,74,27,51
+Tempestad_De_Hierro:98,29,99,35,81,92,86,66,37,26
+Acido
+Artilleri_Viviente:80,46,24,95,28,95,77,35,62,57
+Baba_Corrosiva:56,87,73,54,33,98,38,23,42,21
+Disparo_Bioarcano:100,34,65,82,63,72,43,91,26,91
+Rafaga_De_Vacio:53,80,100,83,97,99,86,76,81,30
+Explosion_Icorosa:94,22,29,30,73,32,58,58,78,61
+Electricidad
+Bateria_Cargada:32,23,25,53,75,61,84,93,40,46
+Fuego_Explosivo:84,93,58,48,96,56,27,75,59,40
+Ultradescarga_Laser:72,78,86,40,99,34,53,80,20,62
+Subida_De_Tension:97,99,75,70,41,56,88,63,69,32
+Choque_De_Rayos:54,53,36,57,37,28,41,53,50,35
+Wins: 14
+Loses: 2
+Attacks: 12
+Success: 11
+Failed: 1
+Giveup: 0
+>>>>>>> Stashed changes
