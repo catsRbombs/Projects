@@ -1,0 +1,2 @@
+Este juego es como un tipo pokemon, donde se seleccionan algunos personajes y se usan las habilidades de tus personajes para enfrentarte contra los de tu rival
+Aplicacion construida mediante threads en JAVA

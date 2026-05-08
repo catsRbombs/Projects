@@ -1,2 +1,1 @@
-# Ultimate-gato
- Efraim Cuevas Aguilar y Fabian Mata Salas
+This is a tic-tac-toe game with a higher dimension grid, making it 3x3 built on assembly.

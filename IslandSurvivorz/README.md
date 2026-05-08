@@ -1,1 +1,2 @@
-# IslandSurvivors
+Este juego trata de un sandbox en el cual se van a crear diferentes personajes que van a necesitar diferentes recursos.
+Se pueden invocar diferentes criaturas y diferentes obstaculos, y diferentes recursos a gusto del usuario.

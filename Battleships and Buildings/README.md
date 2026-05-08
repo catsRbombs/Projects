@@ -1,2 +1,1 @@
-# skibidipiratas
- skibidi
+Esta aplicacion es un juego escrito en JAVA mediante el uso de threads el cual trata de diferentes recursos que se deben acumular, y dos jugasdores se deben enfrentar entre si usando sus recursos para destruir los generadores de recursos de su rival.
